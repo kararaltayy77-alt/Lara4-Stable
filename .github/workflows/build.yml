@@ -3,7 +3,6 @@ name: Build Lara4 IPA
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -13,7 +12,7 @@ jobs:
   build:
     runs-on: macos-13
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -32,54 +31,16 @@ jobs:
           chmod +x ipabuild.sh
           ./ipabuild.sh
 
-      - name: Verify IPA structure
-        working-directory: Lara3-fixed
-        run: |
-          echo "[*] IPA size:"
-          ls -lh build/lara.ipa
-          echo "[*] Payload contents:"
-          unzip -l build/lara.ipa | grep -E "\.app/|Frameworks/" | head -30
-          echo "[*] Entitlements in binary:"
-          unzip -p build/lara.ipa Payload/lara.app/lara > /tmp/lara_bin
-          ldid -e /tmp/lara_bin || true
-
-      - name: Upload xcodebuild log
-        if: always()
+      - name: Upload IPA
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: xcodebuild-log
-          path: Lara3-fixed/build/xcodebuild.log
-          if-no-files-found: ignore
-
-      - name: Upload IPA artifact
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-ipa
+          name: Lara4-Stable-IPA
           path: Lara3-fixed/build/lara.ipa
 
-      - name: Publish nightly release
-        if: github.event_name != 'pull_request'
+      - name: Create Release
+        if: success() && github.event_name == 'push'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
-          COMMITS=$(git log --since='24 hours ago' --pretty=format:'- %h %s (%an)' 2>/dev/null || true)
-          [ -z "$COMMITS" ] && COMMITS=$(git log -5 --pretty=format:'- %h %s (%an)')
-          NOTES_FILE=$(mktemp /tmp/notes.XXXXXX.md)
-          printf '## Lara4 Nightly Build
-
-**Entitlements:** no-sandbox + proc_info-allow via ldid
-
-### Recent commits
-' > "$NOTES_FILE"
-          printf '%s
-' "$COMMITS" >> "$NOTES_FILE"
-          if gh release view nightly >/dev/null 2>&1; then
-            gh release edit nightly --title "Nightly ($(date -u '+%Y-%m-%d %H:%M UTC'))" --notes-file "$NOTES_FILE" --prerelease
-          else
-            gh release create nightly --title "Nightly ($(date -u '+%Y-%m-%d %H:%M UTC'))" --notes-file "$NOTES_FILE" --prerelease
-          fi
-          gh release upload nightly Lara3-fixed/build/lara.ipa --clobber
-          rm -f "$NOTES_FILE"
-          echo "[OK] release updated"
+          gh release create stable-v1 Lara3-fixed/build/lara.ipa             --title "Lara4 Stable v1"             --notes "Lara4 Stable Release - Multi-Path Root Engine v6.0"             --prerelease             || gh release upload stable-v1 Lara3-fixed/build/lara.ipa --clobber
