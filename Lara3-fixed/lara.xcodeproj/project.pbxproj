@@ -151,7 +151,7 @@
 		FF2FDBFD31987C713A895616 /* lara/views/tweaks/dirtyZero/dirtyZeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305CA19E03CD9FB6FE6BA2BD /* lara/views/tweaks/dirtyZero/dirtyZeroView.swift */; };
 		B68D58E8FB474369836CC642 /* tools_kernel_inspect.m in Sources */ = {isa = PBXBuildFile; fileRef = E06A8F57BF4A4287ACF6294F /* tools_kernel_inspect.m */; };
 		EEF5BE18CDEA44D198917440 /* tools_kernel_inspect.h in Headers */ = {isa = PBXBuildFile; fileRef = 42970B171E774301B2E8B718 /* tools_kernel_inspect.h */; };
-		AABBCCDD1122334455667799 /* media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AABBCCDD1122334455667788 /* media.xcassets */; };
+		080038AB74A242388F33B544 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6A6DABD1D814CD1857C55A9 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -331,7 +331,7 @@
 		FFF6B427145AAFE6017688AF /* lara/PartyUI/UI/Indicators/PlainAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lara/PartyUI/UI/Indicators/PlainAlert.swift; sourceTree = "<group>"; };
 		E06A8F57BF4A4287ACF6294F /* tools_kernel_inspect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tools_kernel_inspect.m; path = lara/kexploit/pe/tools_kernel_inspect.m; sourceTree = SOURCE_ROOT; };
 		42970B171E774301B2E8B718 /* tools_kernel_inspect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tools_kernel_inspect.h; path = lara/kexploit/pe/tools_kernel_inspect.h; sourceTree = SOURCE_ROOT; };
-		AABBCCDD1122334455667788 /* media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = media.xcassets; path = "lara/other/media.xcassets"; sourceTree = "<group>"; };
+		C6A6DABD1D814CD1857C55A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -701,6 +701,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				080038AB74A242388F33B544 /* Assets.xcassets in Resources */,
 				15F024122FBB9510004BD090 /* folderDark.materialrecipe in Resources */,
 				15F024152FBB9510004BD090 /* homeScreenBackdrop-application.materialrecipe in Resources */,
 				15F024162FBB9510004BD090 /* dockDark.materialrecipe in Resources */,
@@ -720,7 +721,6 @@
 				15F024342FBB9510004BD090 /* modulesBackground.materialrecipe in Resources */,
 				15F024352FBB9510004BD090 /* podBackgroundViewDark.visualstyleset in Resources */,
 			
-				AABBCCDD1122334455667799 /* media.xcassets in Resources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
