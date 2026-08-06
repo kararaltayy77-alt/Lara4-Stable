@@ -1,1 +1,1 @@
-macos-latest test trigger
+default xcode test
