@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
 
       - name: Select Xcode 15.2
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+          sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
           xcodebuild -version
 
       - name: Install ldid
@@ -43,4 +43,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create stable-v1 Lara3-fixed/build/lara.ipa             --title "Lara4 Stable v1"             --notes "Lara4 Stable Release - Multi-Path Root Engine v6.0"             --prerelease             || gh release upload stable-v1 Lara3-fixed/build/lara.ipa --clobber
+          gh release create stable-v1 Lara3-fixed/build/lara.ipa \
+            --title "Lara4 Stable v1" \
+            --notes "Lara4 Stable Release" \
+            --prerelease \
+            || gh release upload stable-v1 Lara3-fixed/build/lara.ipa --clobber
