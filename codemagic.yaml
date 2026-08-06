@@ -1,44 +1,48 @@
 workflows:
-    lara-ipa:
-      name: lara IPA
-      max_build_duration: 60
-      instance_type: mac_mini_m2
+  lara-stable:
+    name: Lara4 Stable IPA
+    max_build_duration: 60
+    instance_type: mac_mini_m2
 
-      triggering:
-        events:
-          - push
-        branch_patterns:
-          - pattern: main
-            include: true
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
 
-      environment:
-        xcode: latest
+    environment:
+      xcode: 15.2
+      vars:
+        PROJECT_DIR: Lara3-fixed
 
-      scripts:
-        - name: Install ldid
-          script: brew install ldid
+    scripts:
+      - name: Install dependencies
+        script: |
+          brew install ldid
+          xcode-select -p
+          xcodebuild -version
 
-        - name: Build IPA
-          script: |
-            chmod +x ipabuild.sh
-            ./ipabuild.sh
+      - name: Build IPA
+        script: |
+          cd $PROJECT_DIR
+          chmod +x ipabuild.sh
+          ./ipabuild.sh
 
-        - name: Verify IPA
-          script: |
-            echo "[*] IPA size:"
-            ls -lh build/lara.ipa
-            echo "[*] Payload contents:"
-            unzip -l build/lara.ipa | grep -E "\.app/|Frameworks/" | head -30
-            echo "[*] Entitlements:"
-            unzip -p build/lara.ipa Payload/lara.app/lara > /tmp/lara_bin
-            ldid -e /tmp/lara_bin || true
+      - name: Verify IPA
+        script: |
+          cd $PROJECT_DIR
+          echo "[*] IPA size:"
+          ls -lh build/lara.ipa
+          echo "[*] Entitlements:"
+          unzip -p build/lara.ipa Payload/lara.app/lara > /tmp/lara_bin
+          ldid -e /tmp/lara_bin || true
 
-      artifacts:
-        - build/lara.ipa
-        - build/xcodebuild.log
+    artifacts:
+      - Lara3-fixed/build/lara.ipa
+      - Lara3-fixed/build/xcodebuild.log
 
-      publishing:
-        github_releases:
-          prerelease: true
-          artifact_patterns:
-            - build/lara.ipa
+    publishing:
+      github_releases:
+        prerelease: true
+        release_notes: Lara4 Stable Release - Multi-Path Root Engine v6.0
